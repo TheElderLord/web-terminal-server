@@ -28,7 +28,7 @@ exports.getServices = async (req, res) => {
 
 exports.sendEventNow = async (req, res) => {
     // console.log(req.body);
-    const soap = new nomadSoap(NOMAD_HOST, 3857);
+    // const soap = new nomadSoap(NOMAD_HOST, 3857);
     const { queueId, iin, branchId, local } = req.body;
     if (!queueId || !branchId || !local) {
         res.status(400).json({
@@ -54,6 +54,7 @@ exports.sendEventNow = async (req, res) => {
 
 exports.print_tick = async (req, res) => {
     const { soapBody, local } = req.body;
+    console.log("REQ body", req.body);
     try {
         soap.printTicket(soapBody, local, false, function (data) {
             res.status(200).json({

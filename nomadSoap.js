@@ -151,6 +151,7 @@ var NomadSoap = function (host, port) {
               if (err) console.log('Error: ' + err);
               else {
                 try {
+                  // console.log(result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_now'])
                   let event_info = result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_now'][0];
                   console.log(event_info)
                   // printTicket(event_info, local, false);
