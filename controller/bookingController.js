@@ -53,11 +53,25 @@ exports.getDays = async (req, res) => {
         const nowMonth = new Date();
         console.log(nowMonth.getMonth())
         const result = data.split(";").map(e => {
+          
+            const mont = nowMonth.getMonth() + 1;
+            const year = nowMonth.getFullYear();
+            if(e.length == 1){
+                if(mont == 1){
+                    return `0${e}:0${mont}:${year}`
+                }
+                else  return  `0${e}:${mont}:${year}`
+            }  
+            else{
+                if(mont == 1){
+                    return  `${e}:0${mont}:${year}`
+                }
+                else  return`${e}:${mont}:${year}`
+            } 
+            // if (e.trim() != '' && e.trim() != null) {
+            //     return e = e + "." +  + "." + nowMonth.getFullYear()
 
-            if (e.trim() != '' && e.trim() != null) {
-                return e = e + "." + (nowMonth.getMonth() + 1) + "." + nowMonth.getFullYear()
-
-            }
+            // }
 
         })
         res.send(result);
@@ -90,8 +104,8 @@ exports.reserveTicket = async (req, res) => {
     const { queueId, iin, branchId, time } = req.body;
     soap.reserveQueue(queueId, iin, branchId, time, function (data) {
         console.log(data); 
-        if(!data){
-            return res.send("Failed")
+        if(!data || data == "Error"){
+            return res.status(500).json({message:"Failed"})
         } 
         res.send(data);
         res.end;

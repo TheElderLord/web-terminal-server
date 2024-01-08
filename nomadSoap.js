@@ -175,7 +175,7 @@ var NomadSoap = function (host, port) {
       body = body.replace('$iin', iin);
       body = body.replace('$branchId', branchId);
       body = body.replace('$time', time);
-      console.log(body)
+      // console.log(body)
       request.post(
         {
           url: serverUrl,
@@ -188,12 +188,13 @@ var NomadSoap = function (host, port) {
               if (err) console.log('Error: ' + err);
               else {
                 try{
-                  // console.log("Result",result)
+                  // console.log("Result",result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_output'][0])
                   let event_info = result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_output'][0]
                   ['cus:code']
                   return (callback(event_info));
                 }catch(err){
                   console.log(err)
+                  return callback("Error")
                 }
                 
               }
@@ -367,13 +368,26 @@ var NomadSoap = function (host, port) {
           body: body
         },
         function (error, response, body) {
-          if (error) console.log(error);//console.log('Error: ' + error);
-          else if (response.statusCode == 200) {
-            return callback("Success");
-          }
-          else {
-            return callback("Failed")//console.log('error: '+ response.statusCode);
-          }
+        parser.parseString(body, function (err, result) {
+              if (err) console.log(err);//console.log('Error: ' + err);
+              else {
+                try {
+                  
+                  var temp = result['soapenv:envelope']['soapenv:body'][0];
+                
+                  if (temp.includes("Event")) {
+
+                    return callback("Reported");
+                  }
+                  else {
+                    return callback("Success");
+                  }
+                } catch (err) {
+                  console.log(err)
+                  return callback("Error")
+                }
+              }
+            });
         });
 
     },
