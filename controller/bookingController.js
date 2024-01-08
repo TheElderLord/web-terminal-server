@@ -58,15 +58,15 @@ exports.getDays = async (req, res) => {
             const year = nowMonth.getFullYear();
             if(e.length == 1){
                 if(mont == 1){
-                    return `0${e}:0${mont}:${year}`
+                    return `0${e}.0${mont}.${year}`
                 }
-                else  return  `0${e}:${mont}:${year}`
+                else  return  `0${e}.${mont}.${year}`
             }  
             else{
                 if(mont == 1){
-                    return  `${e}:0${mont}:${year}`
+                    return  `${e}.0${mont}.${year}`
                 }
-                else  return`${e}:${mont}:${year}`
+                else  return`${e}.${mont}.${year}`
             } 
             // if (e.trim() != '' && e.trim() != null) {
             //     return e = e + "." +  + "." + nowMonth.getFullYear()
