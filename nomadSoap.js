@@ -175,7 +175,7 @@ var NomadSoap = function (host, port) {
       body = body.replace('$iin', iin);
       body = body.replace('$branchId', branchId);
       body = body.replace('$time', time);
-      // console.log(body)
+      console.log(body)
       request.post(
         {
           url: serverUrl,
@@ -392,7 +392,9 @@ var NomadSoap = function (host, port) {
 
     },
     bookedEventNowCode = function (code, local, callback) {
-      var body = requests.BookedEventNow;
+      local = "ru";
+      var body = requests.bookEventCode;
+      console.log(body)
       body = body.replace('$bookCode', code);
       body = body.replace('$local', local);
       request.post(
@@ -412,8 +414,8 @@ var NomadSoap = function (host, port) {
                   let event_err = result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_output']
                   if (typeof (event_err) === 'undefined') {
                     event_info = result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_now'][0]
-                    console.log(event_info)
-                    printTicket(event_info, local, true);
+                    // console.log(event_info)
+                    // printTicket(event_info, local, true);
                   } else {
                     event_info = result['soapenv:envelope']['soapenv:body'][0]['cus:nomadterminalevent_output'][0]['cus:nomadterminalerr_output'][0]['cus:message'][0]
                   }
