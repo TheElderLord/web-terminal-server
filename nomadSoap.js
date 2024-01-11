@@ -133,6 +133,9 @@ var NomadSoap = function (host, port) {
     },
     eventNow = function (queueId, iin, branchId, local, callback) {
       var body = requests.TerminalEventNow;
+      if(local == "eng"){
+        local = "en";
+      }
       body = body.replace('$queueId', queueId);
       body = body.replace('$iin', iin);
       body = body.replace('$branchId', branchId);

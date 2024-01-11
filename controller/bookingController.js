@@ -10,6 +10,13 @@ exports.getBookedTicket = async (req, res) => {
     }
     try {
         soap.bookedEventNowCode(bookCode, local, function (data) {
+            console.log(data)
+            if(data == "No ticket"){
+                return res.status(201).json({
+                    code: data,
+                    message: 'NO'
+                });
+            }
             res.status(201).json({
                 code: data,
                 message: 'Success'
@@ -32,9 +39,10 @@ exports.getWebServices = async (req, res) => {
     try {
         soap.webServicesList(branchId, queryId, function (data) {
             // console.log(data);  
+            const result = data.filter(e=>e.parentId[0]!="null")
             res.status(200).json({
                 message: 'Success',
-                data: data
+                data: result
             })
         })
     } catch (err) {

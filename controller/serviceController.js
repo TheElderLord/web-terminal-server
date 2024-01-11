@@ -35,6 +35,8 @@ exports.sendEventNow = async (req, res) => {
             message: 'Bad request'
         });
     }
+    console.log(local);
+    
     try {
         soap.eventNow(queueId, iin, branchId, local, function (data) {
             // console.log(data);  
