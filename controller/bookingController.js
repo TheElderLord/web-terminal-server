@@ -17,6 +17,12 @@ exports.getBookedTicket = async (req, res) => {
                     message: 'NO'
                 });
             }
+            else if(data == "Not match time"){
+                return res.status(201).json({
+                    code: data,
+                    message: 'NO TIME'
+                });
+            }
             res.status(201).json({
                 code: data,
                 message: 'Success'
