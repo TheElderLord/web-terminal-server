@@ -24,6 +24,7 @@ var NomadSoap = function (host, port) {
     },
     printTicket = function (event_info, local, booked) {
       try {
+        local = "ru"
         let exec = require('child_process').execFile;
         local = local.toLowerCase()
         // console.log(event_info)
@@ -395,11 +396,15 @@ var NomadSoap = function (host, port) {
 
     },
     bookedEventNowCode = function (code, local, callback) {
-      local = "ru";
+      // local = "ru";
+      if(local == "eng"){
+        local = "en";
+      }
       var body = requests.bookEventCode;
       console.log(body)
       body = body.replace('$bookCode', code);
       body = body.replace('$local', local);
+      console.log(body)
       request.post(
         {
           url: serverUrl,
@@ -411,6 +416,7 @@ var NomadSoap = function (host, port) {
 
             parser.parseString(body, function (err, result) {
               let event_info;
+              
               if (err) console.log('Error: ' + err);
               else {
                 try {
