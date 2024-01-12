@@ -28,7 +28,8 @@ app.use('/rate',ratingRouter)
 
 
 const port = process.env.APP_PORT ;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+const host = process.env.APP_HOST || "localhost";
+app.listen(port,host, () => {
+    console.log(`Server is running on  ${host}:${port}`);
 });
 
