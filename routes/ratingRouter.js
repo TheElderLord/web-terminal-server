@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/",ratingController.rate);
 
-router.get('/check',ratingController.check);
+router.post('/check',ratingController.check);
 
 module.exports = router;
 

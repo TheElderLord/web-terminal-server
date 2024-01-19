@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const cors = require('cors');
 
@@ -6,6 +8,8 @@ const serviceRouter = require('./routes/serviceRouter');
 
 const bookRouter = require('./routes/bookRouter');
 const ratingRouter = require('./routes/ratingRouter');
+
+
 
 const app = express();
 app.use(cors());
@@ -27,8 +31,10 @@ app.use('/rate',ratingRouter)
 
 
 
-const port = process.env.APP_PORT ;
+const port = process.env.APP_PORT;
 const host = process.env.APP_HOST || "localhost";
+
+
 app.listen(port,host, () => {
     console.log(`Server is running on  ${host}:${port}`);
 });

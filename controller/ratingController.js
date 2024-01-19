@@ -36,6 +36,27 @@ exports.rate =  async(req,res) =>{
 }
 
 exports.check = async(req,res)=>{
-    
+    const {ordernum, branchId} = req.body;
+    // console.log('Rating',req.body);
+    try {
+        soap.ticketCheck(ordernum,branchId, function (data) {
+        
+            if(data.toString().includes("not found")){
+                return res.status(404).json({
+                    message:"No ticket"
+                })
+            }
+            res.status(200).json({
+                message:"Ticket",
+                data:data
+            })
+        })
+    } catch (err) {
+
+        console.log(err);
+        res.status(500).json({
+            message: 'Error'
+        });
+    }
 }
 

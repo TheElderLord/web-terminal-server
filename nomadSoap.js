@@ -20,7 +20,16 @@ var NomadSoap = function (host, port) {
       getSlots: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI"><soapenv:Header/><soapenv:Body><cus:NomadTerminalEvent_Slot_Input><cus:QueueIdSlot>$queueId</cus:QueueIdSlot><cus:BranchId>$branchId</cus:BranchId><cus:Time>$day</cus:Time></cus:NomadTerminalEvent_Slot_Input></soapenv:Body></soapenv:Envelope>',
       book: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI"><soapenv:Header/><soapenv:Body><cus:NomadTerminalEvent_Input><cus:QueueId>$queueId</cus:QueueId><cus:IIN>$iin</cus:IIN><cus:BranchId>$branchId</cus:BranchId><cus:Time>$time</cus:Time><cus:Phone>?</cus:Phone><cus:channel>terminal</cus:channel></cus:NomadTerminalEvent_Input></soapenv:Body></soapenv:Envelope>',
       rating: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI"><soapenv:Header/><soapenv:Body><cus:NomadTerminalTicketRatingOrder_Input><cus:EventRatingOrder>$orderNum</cus:EventRatingOrder><cus:Rating>$mark</cus:Rating></cus:NomadTerminalTicketRatingOrder_Input></soapenv:Body></soapenv:Envelope>',
-      bookEventCode: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI"><soapenv:Header/><soapenv:Body><cus:Nomad_BookedEventOrderNow_Input><cus:OrderBookedNow>$bookCode</cus:OrderBookedNow><cus:local>$local</cus:local></cus:Nomad_BookedEventOrderNow_Input></soapenv:Body></soapenv:Envelope>'
+      bookEventCode: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI"><soapenv:Header/><soapenv:Body><cus:Nomad_BookedEventOrderNow_Input><cus:OrderBookedNow>$bookCode</cus:OrderBookedNow><cus:local>$local</cus:local></cus:Nomad_BookedEventOrderNow_Input></soapenv:Body></soapenv:Envelope>',
+      ticket_info:`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://nomad.org/CustomUI">
+      <soapenv:Header/>
+      <soapenv:Body>
+         <cus:NomadEvent_Info_Input>
+            <cus:EventId>$ordernum</cus:EventId>
+            <cus:BranchId>$branchId</cus:BranchId>
+         </cus:NomadEvent_Info_Input>
+      </soapenv:Body>
+   </soapenv:Envelope>`
     },
     printTicket = function (event_info, local, booked) {
       try {
@@ -440,6 +449,43 @@ var NomadSoap = function (host, port) {
           }
         });
     }
+    ticketCheck = function (orderNum, branchID, callback) {
+      var body = requests.ticket_info;
+      
+      body = body.replace("$ordernum", orderNum);
+      body = body.replace("$branchId", branchID);
+      // console.log(body)
+      request.post(
+        {
+          url: serverUrl,
+          body: body
+        },
+        function (error, response, body) {
+        
+        body = body.replace("<cus:NomadTicketInfo>","")
+        // console.log(body)
+        parser.parseString(body, function (err, result) {
+              if (err) console.log("line 465", err);//console.log('Error: ' + err);
+              else {
+                try {
+                  // console.log(result)
+                  var temp = result['soapenv:envelope']
+                  ['soapenv:body'][0]['xsd:element'][0];
+                  return callback(temp);
+                  // ["cus:NomadTicketInfo"];
+                  // console.log(temp);
+                } catch (err) {
+                  var temp = result['soapenv:envelope']
+                  ['soapenv:body'][0];
+                  console.log("line 475" ,err);
+                  return callback(temp)
+                }
+              }
+            });
+        });
+
+    }
+    
 
 
 
@@ -455,7 +501,8 @@ var NomadSoap = function (host, port) {
     reserveQueue: reserveQueue,
     printTicket: printTicket,
     rating: rating,
-    bookedEventNowCode: bookedEventNowCode
+    bookedEventNowCode: bookedEventNowCode,
+    ticketCheck:ticketCheck
   };
 };
 
