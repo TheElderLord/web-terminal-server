@@ -448,7 +448,7 @@ var NomadSoap = function (host, port) {
             console.log(response.statusCode);//console.log('error: '+ response.statusCode);
           }
         });
-    }
+    },
     ticketCheck = function (orderNum, branchID, callback) {
       var body = requests.ticket_info;
       

@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 
-const serviceRouter = require('./routes/serviceRouter');
+const serviceRouter = require('./routes/serviceRouter')
 
 const bookRouter = require('./routes/bookRouter');
 const ratingRouter = require('./routes/ratingRouter');
