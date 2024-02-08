@@ -1,0 +1,14 @@
+[
+    {
+      "name": "webTerminal service",
+      "script": "src/index.js",
+      "instances": 1,
+      "exec_mode": "fork",
+      "watch": true,
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": 3000
+      }
+    }
+  ]
+  
