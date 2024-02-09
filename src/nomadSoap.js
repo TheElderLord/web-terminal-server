@@ -33,7 +33,7 @@ var NomadSoap = function (host, port) {
     },
     printTicket = function (event_info, local, booked) {
       try {
-        local = "ru"
+        // local = "ru"
         let exec = require('child_process').execFile;
         local = local.toLowerCase()
         // console.log(event_info)
@@ -66,12 +66,23 @@ var NomadSoap = function (host, port) {
         fs.appendFileSync('1.txt', local + "\r\n");
         fs.appendFileSync('1.txt', "\r\n");
         fs.appendFileSync('1.txt', "\r\n");
-        fs.appendFileSync('1.txt', "\r\n");
-        fs.appendFileSync('1.txt', "\r\n");
+        // fs.appendFileSync('1.txt', "\r\n");
+        fs.appendFileSync('1.txt', event_info["cus:ordernum"][0]+ "\r\n");
         fs.appendFileSync('1.txt', "\r\n");
         exec('NomadPrint.exe', function (err, data) {
           console.log(err)
         });
+        // 201
+// Прием документов 
+// 3
+// 10:48:17 30.01.2024
+// ru
+// 0
+
+// 457677
+
+// Алатауский район
+
 
         //file written successfully
       } catch (err) {
