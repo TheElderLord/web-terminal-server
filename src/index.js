@@ -16,9 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 
-app.use('/services', serviceRouter);
-app.use('/booking',bookRouter)
-app.use('/rate',ratingRouter)
+app.use('/api/v1/services', serviceRouter);
+app.use('/api/v1/booking',bookRouter)
+app.use('/api/v1/rate',ratingRouter)
 
 
 
