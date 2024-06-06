@@ -29,7 +29,7 @@ exports.getServices = async (req, res) => {
 exports.sendEventNow = async (req, res) => {
     // console.log(req.body);
     // const soap = new nomadSoap(NOMAD_HOST, 3857);
-    const { queueId, iin, branchId, local } = req.body;
+    const { queueId, iin, branchId, local,channel } = req.body;
     if (!queueId || !branchId || !local) {
         res.status(400).json({
             message: 'Bad request'
@@ -38,7 +38,7 @@ exports.sendEventNow = async (req, res) => {
     console.log(local);
     
     try {
-        soap.eventNow(queueId, iin, branchId, local, function (data) {
+        soap.eventNow(queueId, iin, branchId, local,channel, function (data) {
             // console.log(data);  
             res.status(200).json({
                 message: 'Success',
